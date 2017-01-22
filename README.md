@@ -3,11 +3,11 @@
 QtCreator has a **poor** support for Emacs users. I used the following
 steps to make QtCreator Emacs friendly:
 
-* Did checkout of QtCreator source code.
-* Removed `Alt-...` shortcuts/quick keys in the menu as they **CANNOT** 
-  be disabled using configuration.
-* Built QtCreator.
-* Customized key bindings to match Emacs as close as possible.
+* Git clone of QtCreator source code.
+* Removal of `Alt-...` shortcuts in the menu as they **CANNOT** 
+  be disabled using any configuration.
+* QtCreator build.
+* Customization of shortcuts in QtCreator to match Emacs.
 
 Check the detailed description below.
 
