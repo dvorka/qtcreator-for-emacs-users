@@ -1,13 +1,11 @@
-# QtCreator for Emacs Users
-
-QtCreator has **tragic** support for Emacs users. I used the following
+QtCreator has a **poor** support for Emacs users. I used the following
 steps to make QtCreator Emacs friendly:
 
 * Did checkout of QtCreator source code.
 * Removed `Alt-...` shortcuts/quick keys in the menu as they **CANNOT** 
   be disabled using configuration.
 * Built QtCreator.
-* Customized key binding to match Emacs as close as possible.
+* Customized key bindings to match Emacs as close as possible.
 
 
 
@@ -16,67 +14,68 @@ steps to make QtCreator Emacs friendly:
 * Presumptions:
     * Installed QtCreator
 	* Ubuntu 14.04+
-* Checkout QtCreator:
+* Checkout QtCreator (Note `--recursive` below that forces clone of
+QBS sub-module. If you don't need  QBS (I had problem to checkout module 
+corresponding to a trunk tag) simply skip `--recursive` - I suggest it):
 ```
-git clone --recursive https://code.qt.io/qt-creator/qt-creator.git
-
-# note --recursive above (checkout QBS) sub-module, if you don't need
-# it (I had problem to checkout module corresponding to trunk) simply
-# skip --recursive (I suggest it):
-
+# without QBS
 git clone https://code.qt.io/qt-creator/qt-creator.git
+
+# with QBS
+git clone --recursive https://code.qt.io/qt-creator/qt-creator.git
 ```
-* You just checkout the **latest** QtCreator source code, but
-  typically you don't have the latest Qt installed in your distro
-  (I also don't want to have >1 Qt versions in the system) and actually
-  you don't want it - you want the version you use. Lets rebuild
-  the version of QtCreator you have in the system as you will have
-  required most dependencies:
-    * Determine QtCreator version: 
-	  `qtcreator -version` 
-	  e.g.
-	  `Qt Creator 3.0.1 based on Qt 5.2.1`
-* Install dev packages for your qt:
+* You just cloned the **latest** QtCreator source code, but
+  typically you do **NOT** have the latest Qt installed in your system
+  (I also don't want to have >1 Qt versions installed) and actually
+  you don't want it - you just want to patch the version you use. 
+  Lets rebuild the version of QtCreator you have and thus use most
+  most of the dependencies you already have.
+* Determine QtCreator version: 
+  `qtcreator -version` 
+  e.g.
+  `Qt Creator 3.0.1 based on Qt 5.2.1`
+* Install **dev** packages for your Qt:
   `sudo apt-get install qtbase5-dev`
 * Install **private** build packages:
   `sudo apt-get build-dep qtcreator`
-* List tags in Git checkout:
+* List **tags** in Git checkout:
   `git tag -l | grep 3.0.1`
 * Checkout tag corresponding to QtCreator you have:
   `git checkout tags/v3.0.1`
-* If you did `--recursive` checkout, you also have to checkout 
+* If you did `--recursive` checkout above, you also have to checkout 
   corresponding QBS sub-module (I failed to find the right one, therefore 
-  I skipped QBS above as a workaround i.e. I don't have any suggestion for QBS).
+  I skipped QBS as a workaround).
 * Check the status w/:
   `git status`
-* Build QtCreator as described in:
-  http://wiki.qt.io/Building_Qt_Creator_from_Git
-    * Check QMake version: `qmake -v` (must be on path and no error)
-	* Prepare Makefile:
+* Build QtCreator as described below
+  (full howto http://wiki.qt.io/Building_Qt_Creator_from_Git)
+* Check QMake version: `qmake -v` (must be on path and no error)
+* Prepare Makefile:
 ```	
-	  # cd to directory containing qt-creator/ directory with Git repository
+	  # cd to directory containing qt-creator/ with Git repository
 	  mkdir qt-creator-build
-	  # now qt-creator/ and qt-creator-build/ are on the same level
+	  # IMPORTANT: now qt-creator/ and qt-creator-build/ are on the same level
 	  cd qt-creator-build
 	  qmake -r ../qt-creator/qtcreator.pro
 ```
 * Configure and make:
 ```
-      # if you are not in build directory, then cd to it
+      # change to build directory
       cd qt-creator-build
       qmake -r ../qt-creator/qtcreator.pro
+	  # use multiple cores to make (I actually use number of cores - 1 to avoid trashing)
       make -j <number-of-cpu-cores+1>
-	  # I used `make -j 3` (having four cores to avoid machine trashing) 
-	  # if `make -j ...` fails, try to run it w/ one core just by running `make`
+	  # if build *fails* try to make it using single CPU core
+	  make
 ```
 
-Troubleshooting:
+Build troubleshooting:
 
 * Project ERROR: Unknown module(s) in QT: script
-    * ... check reference below... or `sudo apt-cache search qt | grep script`
+    * ... check package to lib reference below... or `sudo apt-cache search qt | grep script`
 	* `sudo apt-get install qtscript5-dev`
 * Project ERROR: Unknown module(s) in QT: help
-    * ... check reference below...
+    * ... check package to lib reference below...
 	* `sudo apt-get install qttools5-dev`
 * Package to lib reference:
 ```
