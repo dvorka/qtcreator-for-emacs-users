@@ -1,7 +1,7 @@
 # QtCreator for Emacs Users
 
 QtCreator has **tragic** support for Emacs users - the only solution
-to disable `Alt-...` shortcuts in the menu - **CANNOT** be switched off -
+is to disable `Alt-...` shortcuts in the menu - **CANNOT** be switched off -
 is to change its source code and build own version.
 
 
