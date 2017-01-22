@@ -10,8 +10,8 @@ is to change its source code and build own version.
 How to (re)compile QtCreator:
 
 * Presumptions:
-    * You have installed QtCreator and using it to build Qt applications
-	* You run Ubuntu
+    * Installed QtCreator
+	* Ubuntu 14.04+
 * Checkout QtCreator:
 ```
 git clone --recursive https://code.qt.io/qt-creator/qt-creator.git
@@ -40,13 +40,9 @@ git clone https://code.qt.io/qt-creator/qt-creator.git
   `git tag -l | grep 3.0.1`
 * Checkout tag corresponding to QtCreator you have:
   `git checkout tags/v3.0.1`
-* QtCreator's Git repository has also sub-module - find the latest
-  commit in the main Git you just checkout e.g.
-  `2014-01-29 10:37 Eike Ziller        o [v3.0.1] [HEAD] Version bump`
-  Then change to module directory 
-  `cd qt-creator/src/shared`
-  and use the date to find commit which to checkout (around `2014-01-29 10:37`):
-  `git checkout 16fd3e4a3669eb542a0ff7761fd83f6ea8f559a6`
+* If you did `--recursive` checkout, you also have to checkout 
+  corresponding QBS sub-module (I failed to find the right one, therefore 
+  I skipped QBS above as a workaround i.e. I don't have any suggestion for QBS).
 * Check the status w/:
   `git status`
 * Build QtCreator as described in:
