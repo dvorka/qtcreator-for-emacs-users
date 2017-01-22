@@ -144,7 +144,7 @@ Then rebuild QtCreator (as described above - just run `make` in build
 directory) and install new binary (manually or using `make install`).
 
 The patch only removes shortcuts for top-level menu items in 
-application's main window (`src/plugins/coreplugin/mainwindow.cpp`,
+application's main window (`./src/plugins/coreplugin/mainwindow.cpp`,
 `./src/plugins/projectexplorer/projectexplorer.cpp`).
 
 
