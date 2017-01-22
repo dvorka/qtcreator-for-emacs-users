@@ -12,6 +12,7 @@ steps to make QtCreator Emacs friendly:
 
 
 ### How to checkout and build QtCreator
+Clone and build:
 
 * Presumptions:
     * Installed QtCreator
@@ -42,9 +43,9 @@ git clone --recursive https://code.qt.io/qt-creator/qt-creator.git
   `sudo apt-get build-dep qtcreator`
 * List **tags** in Git checkout:
   `git tag -l | grep 3.0.1`
-* Checkout tag corresponding to QtCreator you have:
+* Checkout tag corresponding to QtCreator you have e.g.
   `git checkout tags/v3.0.1`
-* If you did `--recursive` checkout above, you also have to checkout 
+* If you did `--recursive` clone above, you also have to checkout 
   corresponding QBS sub-module (I failed to find the right one, therefore 
   I skipped QBS as a workaround).
 * Check the status w/:
@@ -129,3 +130,96 @@ x11extras           libqt5x11extras5-dev                libqt5x11extras5
 xml                 qtbase5-dev                         libqt5xml5
 xmlpatterns         libqt5xmlpatterns5-dev              libqt5xmlpatterns5
 ```
+
+
+
+### Patch disabling Alt- keys
+Use the following patch to remove Alt- keys from the menu:
+```diff
+diff --git a/src/plugins/coreplugin/mainwindow.cpp b/src/plugins/coreplugin/mainwindow.cpp
+index a7eb0a8..769a05c 100644
+--- a/src/plugins/coreplugin/mainwindow.cpp
++++ b/src/plugins/coreplugin/mainwindow.cpp
+@@ -468,7 +468,7 @@ void MainWindow::registerDefaultContainers()
+     // File Menu
+     ActionContainer *filemenu = ActionManager::createMenu(Constants::M_FILE);
+     menubar->addMenu(filemenu, Constants::G_FILE);
+-    filemenu->menu()->setTitle(tr("&File"));
++    filemenu->menu()->setTitle(tr("File"));
+     filemenu->appendGroup(Constants::G_FILE_NEW);
+     filemenu->appendGroup(Constants::G_FILE_OPEN);
+     filemenu->appendGroup(Constants::G_FILE_PROJECT);
+@@ -482,7 +482,7 @@ void MainWindow::registerDefaultContainers()
+     // Edit Menu
+     ActionContainer *medit = ActionManager::createMenu(Constants::M_EDIT);
+     menubar->addMenu(medit, Constants::G_EDIT);
+-    medit->menu()->setTitle(tr("&Edit"));
++    medit->menu()->setTitle(tr("Edit"));
+     medit->appendGroup(Constants::G_EDIT_UNDOREDO);
+     medit->appendGroup(Constants::G_EDIT_COPYPASTE);
+     medit->appendGroup(Constants::G_EDIT_SELECTALL);
+@@ -493,12 +493,12 @@ void MainWindow::registerDefaultContainers()
+     // Tools Menu
+     ActionContainer *ac = ActionManager::createMenu(Constants::M_TOOLS);
+     menubar->addMenu(ac, Constants::G_TOOLS);
+-    ac->menu()->setTitle(tr("&Tools"));
++    ac->menu()->setTitle(tr("Toolz"));
+ 
+     // Window Menu
+     ActionContainer *mwindow = ActionManager::createMenu(Constants::M_WINDOW);
+     menubar->addMenu(mwindow, Constants::G_WINDOW);
+-    mwindow->menu()->setTitle(tr("&Window"));
++    mwindow->menu()->setTitle(tr("Window"));
+     mwindow->appendGroup(Constants::G_WINDOW_SIZE);
+     mwindow->appendGroup(Constants::G_WINDOW_VIEWS);
+     mwindow->appendGroup(Constants::G_WINDOW_PANES);
+@@ -509,7 +509,7 @@ void MainWindow::registerDefaultContainers()
+     // Help Menu
+     ac = ActionManager::createMenu(Constants::M_HELP);
+     menubar->addMenu(ac, Constants::G_HELP);
+-    ac->menu()->setTitle(tr("&Help"));
++    ac->menu()->setTitle(tr("Help"));
+     ac->appendGroup(Constants::G_HELP_HELP);
+     ac->appendGroup(Constants::G_HELP_SUPPORT);
+     ac->appendGroup(Constants::G_HELP_ABOUT);
+diff --git a/src/plugins/projectexplorer/projectexplorer.cpp b/src/plugins/projectexplorer/projectexplorer.cpp
+index d6d7dd3..2798d64 100644
+--- a/src/plugins/projectexplorer/projectexplorer.cpp
++++ b/src/plugins/projectexplorer/projectexplorer.cpp
+@@ -468,13 +468,13 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
+     // build menu
+     ActionContainer *mbuild =
+         ActionManager::createMenu(Constants::M_BUILDPROJECT);
+-    mbuild->menu()->setTitle(tr("&Build"));
++    mbuild->menu()->setTitle(tr("Build"));
+     menubar->addMenu(mbuild, Core::Constants::G_VIEW);
+ 
+     // debug menu
+     ActionContainer *mdebug =
+         ActionManager::createMenu(Constants::M_DEBUG);
+-    mdebug->menu()->setTitle(tr("&Debug"));
++    mdebug->menu()->setTitle(tr("Debug"));
+     menubar->addMenu(mdebug, Core::Constants::G_VIEW);
+ 
+     ActionContainer *mstartdebugging =
+```
+Then rebuild QtCreator (as described above - just run `make` in build
+directory) and install new binary (manually or using `make install`).
+
+The patch only removes shortcuts for top-level menu items in 
+application's main window (`src/plugins/coreplugin/mainwindow.cpp`,
+`./src/plugins/projectexplorer/projectexplorer.cpp`).
+
+
+
+### How to customize shortcuts in QtCreator
+QtCreator shortcuts can be customized in:
+
+* Menu/Tools/Options/Environment/Keyboard tab
+
+If you don't want to customize shortcuts yourself, 
+you may want to download basic configuration from 
+the accepted response of the following StackOverflow 
+question:
+
+http://stackoverflow.com/questions/10988696/qt-creator-in-emacs-keybind
