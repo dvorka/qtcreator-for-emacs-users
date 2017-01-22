@@ -225,3 +225,8 @@ the accepted response of the following StackOverflow
 question:
 
 http://stackoverflow.com/questions/10988696/qt-creator-in-emacs-keybind
+
+### Resources
+Emacs in QtCreator:
+
+* EmacsKeys for QtCreator 2.5.2: https://github.com/fberger/emacskeys
