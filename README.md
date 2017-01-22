@@ -1,13 +1,17 @@
 # QtCreator for Emacs Users
 
-QtCreator has **tragic** support for Emacs users - the only solution
-is to disable `Alt-...` shortcuts in the menu - **CANNOT** be switched off -
-is to change its source code and build own version.
+QtCreator has **tragic** support for Emacs users. I used the following
+steps to make QtCreator Emacs friendly:
+
+* Did checkout of QtCreator source code.
+* Removed `Alt-...` shortcuts/quick keys in the menu as they **CANNOT** 
+  be disabled using configuration.
+* Built QtCreator.
+* Customized key binding to match Emacs as close as possible.
 
 
 
-## How to checkout and build QtCreator
-How to (re)compile QtCreator:
+### How to checkout and build QtCreator
 
 * Presumptions:
     * Installed QtCreator
@@ -56,7 +60,7 @@ git clone https://code.qt.io/qt-creator/qt-creator.git
 	  cd qt-creator-build
 	  qmake -r ../qt-creator/qtcreator.pro
 ```
-    * Configure and make:
+* Configure and make:
 ```
       # if you are not in build directory, then cd to it
       cd qt-creator-build
