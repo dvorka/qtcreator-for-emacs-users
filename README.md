@@ -159,7 +159,9 @@ you may want to download basic configuration from
 the accepted response of the following StackOverflow 
 question:
 
-http://stackoverflow.com/questions/10988696/qt-creator-in-emacs-keybind
+* http://stackoverflow.com/questions/10988696/qt-creator-in-emacs-keybind
+
+
 
 ### Resources
 Emacs in QtCreator:

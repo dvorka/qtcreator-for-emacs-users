@@ -64,3 +64,28 @@ index d6d7dd3..2798d64 100644
      menubar->addMenu(mdebug, Core::Constants::G_VIEW);
  
      ActionContainer *mstartdebugging =
+diff --git a/src/plugins/texteditor/basetexteditor.cpp b/src/plugins/texteditor/basetexteditor.cpp
+index d361997..212a208 100644
+--- a/src/plugins/texteditor/basetexteditor.cpp
++++ b/src/plugins/texteditor/basetexteditor.cpp
+@@ -5256,7 +5256,19 @@ void BaseTextEditorWidget::copyLine()
+ 
+ void BaseTextEditorWidget::deleteLine()
+ {
+-    maybeSelectLine();
++    QTextCursor cursor = textCursor();
++    if (!cursor.hasSelection()) {
++        const QTextBlock &block = cursor.block();
++        if (block.next().isValid()) {
++	    cursor.setPosition(cursor.selectionStart());
++            cursor.setPosition(block.next().position(), QTextCursor::KeepAnchor);
++        } else {
++	    cursor.setPosition(cursor.selectionStart());
++	    cursor.movePosition(QTextCursor::EndOfBlock);
++        }
++        setTextCursor(cursor);
++    }
++
+     textCursor().removeSelectedText();
+ }
+ 
