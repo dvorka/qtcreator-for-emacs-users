@@ -9,6 +9,8 @@ steps to make QtCreator Emacs friendly:
 * Built QtCreator.
 * Customized key bindings to match Emacs as close as possible.
 
+Check the detailed description below.
+
 
 
 ### How to checkout and build QtCreator
